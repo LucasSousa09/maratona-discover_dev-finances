@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" /> -->
+    <title>Dev Finances</title>
+</head>
+<body>
+    <header class="header">
+        <img src="./assets/logo.svg" alt="Logo Dev Finance">
+    </header>
+
+    
+    <main class="container" description>
+        
+        <section class="balance-container">
+            <h2 class="sr-only balance-title">Balanço</h2>
+            <div class="card input-card">
+                <h3 class="label">
+                    <span>Entradas</span>
+                    <img src="./assets/income.svg" alt="Imagem de Entradas">
+                </h3>
+                <p class="money input">R$: 0,00 </p>
+            </div>
+            <div class="card output-card">
+                <h3 class="label">
+                    <span>Saídas</span> 
+                    <img src="./assets/expense.svg" alt="Imagem de Saídas">
+                </h3>
+                <p class="money output">R$: 0,00</p>
+            </div>
+            <div class="card result-card">
+                <h3 class="label result">
+                    <span>Total</span>
+                    <img src="./assets/total.svg" alt="Imagem de Total">
+                </h3>
+                <p class="money result">R$: 0,00</p>
+            </div>
+        </section>
+
+        <section class="transaction-container">
+            <button class="btn-new">+ Nova transação</button>
+            <h2 class="sr-only transactions-title">Transações</h2>
+            <table class="table" id="table">
+                <thead class="thead">
+                    <tr class="tr">
+                        <th class="th">Descrição</th>
+                        <th class="th">Valor</th>
+                        <th class="th">Data</th>
+                        <th class="th"></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </section>
+
+
+        <form class="form" id="form" action="">
+            <h2>Nova Transação</h2>
+
+            <label for="input-description" class="sr-only">Descrição</label>
+            <input class="input-description" id="input-description" name="input-description" type="text" placeholder="Descrição" required>
+            <label for="input-value" class="sr-only">Valor</label>
+            <input class= "input-value" id="input-value" name="input-value" type="number" placeholder="Valor" step=".01" required>
+            <label for="input-date" class="sr-only">Data</label>
+            <input class="input-date" id="input-date" name="input-date" type="date" required>
+            
+            <select class="select" id="select" name="select" required>
+                <option value="" disabled selected hidden required>Tipo de Transação</option>
+                <option value="0">Entrada</option>
+                <option value="1">Saída</option>
+            </select>
+            
+            <div class="form-btn-container">
+                <button class="form-btn cancel" type="button">Cancelar</button>
+                <button class="form-btn save" type="submit">Salvar</button>
+            </div>
+        </form>
+
+        <div class="overlay"></div>
+    
+    </main>
+    <footer class="footer">
+        <p>dev.finance$</p>
+    </footer>
+    <script src="./script.js"></script>
+</body>
+</html>
