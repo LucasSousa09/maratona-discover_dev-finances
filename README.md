@@ -1,5 +1,5 @@
 # Maratona Discovery 
-## Dev.finances
+## dev.finance$
 
 🚀Um app incrível, disponibilizado pela Rocketseat🚀
 
