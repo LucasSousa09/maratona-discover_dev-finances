@@ -5,7 +5,63 @@ const form = document.getElementById('form')
 const cancelBtn = document.querySelector('.form-btn.cancel')
 const saveBtn = document.querySelector('.form-btn.save')
 
-const table = document.getElementById('table')
+const toggle = document.getElementById('theme-toggle')
+
+let month = new Date().getMonth()
+const months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
+const monthDisplay = document.querySelector('.month-display')
+
+
+monthDisplay.innerHTML = months[month]
+
+const btnPrev = document.querySelector('.prev')    
+const btnNext = document.querySelector('.next')
+const btnAll = document.querySelector('.all')
+
+btnPrev.addEventListener('click', () => {
+    if(month === undefined){
+        month = new Date().getMonth()
+    }
+    else if( month === 0){
+        month = 11
+    }
+    else{
+        month -= 1
+    }
+    monthDisplay.innerHTML = months[month]
+    App.reload()
+})    
+btnNext.addEventListener('click', () => {
+    if(month === undefined){
+        month = new Date().getMonth()
+    }
+    else if(month === 11){
+        month = 0;
+    }
+    else{
+        month += 1
+    }
+    monthDisplay.innerHTML = months[month]
+    App.reload()
+})
+
+btnAll.addEventListener('click', () => {
+    month = undefined;
+    monthDisplay.innerHTML = 'Todas'
+
+    App.reload()
+})
+
+toggle.addEventListener('click', (evt) => {
+    const html = document.querySelector('html')
+    if(evt.target.checked === true){
+        html.classList.toggle('dark')
+    }
+    else{
+        html.classList.toggle('dark')
+    }
+}
+)
 
 // const transactions = JSON.parse(localStorage.getItem('transaction'))
 const inputValue = []
@@ -37,7 +93,7 @@ const Utils = {
 
     formatAmount(value){
         value = Number(value) * 100        
-        return value
+        return Math.round(value)
     },
 
     formatDate(date){
@@ -71,21 +127,44 @@ const Transaction = {
 
     incomes(){
         let income = 0
-        Transaction.all.forEach(transaction => {
-            if(transaction.type === 'INCOME'){
-                income += Number(transaction.amount)
-            }
-        })
+
+        if(month === undefined){
+            Transaction.all.forEach(transaction => {
+                if(transaction.type === 'INCOME'){
+                    income += Number(transaction.amount)
+                }
+            })
+        }
+        else{
+            Transaction.all.forEach(transaction => {
+                let date  = transaction.date.split("/")
+                if(Number(date[1]) === month + 1 && transaction.type === 'INCOME'){
+                    income += Number(transaction.amount)
+                }
+            })    
+        }        
+
         return income
     },
 
     expenses(){
         let expense = 0
-        Transaction.all.forEach(transaction => {
-            if(transaction.type === 'EXPENSE'){
-                expense += Number(transaction.amount)
-            }
-        })
+        if(month === undefined){
+            Transaction.all.forEach(transaction => {
+                if(transaction.type === 'EXPENSE'){
+                    expense += Number(transaction.amount)
+                }
+            })
+        }
+        else{
+            Transaction.all.forEach(transaction => {
+                let date  = transaction.date.split("/")
+                if(Number(date[1]) === month + 1 && transaction.type === 'EXPENSE'){
+                    expense += Number(transaction.amount)
+                }
+            })    
+        }        
+        
         return expense
     },
 
@@ -122,8 +201,10 @@ const DOM = {
     },
 
     updateBalance(){
+        const total = document.querySelector('.card.result-card')
         document.querySelector('.money.input').innerHTML = Utils.formatCurrency(Transaction.incomes(), 'INCOME')
         document.querySelector('.money.output').innerHTML = Utils.formatCurrency(Transaction.expenses(), 'EXPENSES')
+        Transaction.total() < 0 ? total.classList.add('negative') : total.classList.remove('negative')
         document.querySelector('.money.result').innerHTML = Utils.formatCurrency(Transaction.total(), 'INCOME')
     },
 
@@ -197,9 +278,15 @@ const Form = {
 const App = {
     init() {
     Transaction.all.forEach((transaction, index) => {
-        DOM.addTransactions(transaction, index)
+        let date  = transaction.date.split("/")
+        if(month === undefined){
+            DOM.addTransactions(transaction, index)
+        }
+        else if(Number(date[1]) === month + 1){         
+            DOM.addTransactions(transaction, index)
+        }
     })
-    
+
     const removeBtns = document.querySelectorAll('.btn-td')
     //Remove Transaction
     removeBtns.forEach( (btn, idx) => {

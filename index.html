@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" /> -->
     <title>Dev Finances</title>
 </head>
 <body>
     <header class="header">
         <img src="./assets/logo.svg" alt="Logo Dev Finance">
+        <div class="toggle-container">
+            <input type="checkbox" id="theme-toggle" class="toggle">
+            <label class="label-toggle"for="theme-toggle">
+                <div class="ball"></div>
+            </label>
+        </div>
     </header>
 
     
@@ -43,6 +48,7 @@
         <section class="transaction-container">
             <button class="btn-new">+ Nova transação</button>
             <h2 class="sr-only transactions-title">Transações</h2>
+            <br/>
             <table class="table" id="table">
                 <thead class="thead">
                     <tr class="tr">
@@ -54,6 +60,16 @@
                 </thead>
                 <tbody id="tbody"></tbody>
             </table>
+            <div class="btn-container">
+                <div class="month-selector">
+                    <button class="btn prev">Prev</button>
+                    <div class="month-display"></div>
+                    <button class="btn next">Next</button>
+                </div>
+                <div class="all-months">
+                    <button class="btn all">Todas</button>
+                </div>
+            </div>
         </section>
 
 
