@@ -1,4 +1,6 @@
 # Maratona Discovery 
-## Dev_finances
+## dev.finance$
 
-Um app incrível, disponibilizado pela Rocket
+🚀Um app incrível, disponibilizado pela Rocketseat🚀
+
+![](assets/dev_finances.jpg)
