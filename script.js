@@ -12,6 +12,8 @@ const months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","A
 const monthDisplay = document.querySelector('.month-display')
 
 const selector = document.querySelector('.months-selector')
+const yearSelector = document.querySelector('.year-selector')
+
 const btnPrev = document.querySelector('.prev')    
 const btnNext = document.querySelector('.next')
 const btnAll = document.querySelector('.all')
@@ -41,6 +43,11 @@ selector.addEventListener('change', (evt)=> {
     }
     App.reload()
 })
+//Changing the year by selector
+yearSelector.addEventListener('change', ()=> {
+    App.reload()
+})
+
 
 //Changing the month via button
 btnPrev.addEventListener('click', () => {
@@ -301,6 +308,8 @@ const Animations = {
 
     animationOpen(){
         let anima = document.querySelector('.animation-div')
+        let selectedYear = yearSelector.value
+        
         let array = []
     
         Transaction.all.forEach(transaction => {
@@ -308,12 +317,14 @@ const Animations = {
         })
     
         let transactionMonths = []
+        let transactionMonthAndYear = []
     
         array.forEach(date => {
             const dates = date.split('/')
             transactionMonths.push(dates[1])
+            transactionMonthAndYear.push(`${dates[1]}/${dates[2]}`)
         })
-    
+
         if(month === undefined){
             const length = transactionMonths.length
             anima.animate([
@@ -332,9 +343,24 @@ const Animations = {
                     counter+= 1
                 }
                 else{
-                    console.log("Other month transactions")
+                    // console.log("Other month transactions")
                 }
             })
+
+           transactionMonthAndYear.forEach(transaction => {
+             array = transaction.split('/')
+             thisYear = array[1]
+             thisMonth = Number(array[0])
+             if (selectedYear === "undefined"){
+               //console.log('Do nothing!')
+             }
+             else if(selectedYear !== thisYear && thisMonth === month + 1){
+               counter-= 1
+             }
+             else{
+               //console.log('Something expected hapened')
+             }
+           })
     
             anima.animate([
                 {height: "0px"},
@@ -351,11 +377,23 @@ const App = {
     init() {
     Transaction.all.forEach((transaction, index) => {
         let date  = transaction.date.split("/")
-        if(month === undefined){
-            DOM.addTransactions(transaction, index)
+        let year = yearSelector.value
+
+        if(year === "undefined"){
+            if(month === undefined){
+                DOM.addTransactions(transaction, index)
+            }
+            else if(Number(date[1]) === month + 1){         
+                DOM.addTransactions(transaction, index)
+            }
         }
-        else if(Number(date[1]) === month + 1){         
-            DOM.addTransactions(transaction, index)
+        else if(date[2] === year){
+            if(month === undefined){
+                DOM.addTransactions(transaction, index)
+            }
+            else if(Number(date[1]) === month + 1){         
+                DOM.addTransactions(transaction, index)
+            }
         }
     })
 

@@ -537,8 +537,14 @@ body{
         margin-top: 1rem;
         width: 100%;
     }
+    .btn{
+        padding: 6px 20px;
+    }
     .btn.all{
         width: 100%;
+    }
+    .selector{
+        padding: 6px 8px;
     }
 }
 
