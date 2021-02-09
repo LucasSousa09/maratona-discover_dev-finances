@@ -80,7 +80,6 @@ btnAll.addEventListener('click', () => {
 
 const inputValue = []
 
-//Open and Close Modal
 const Modal = {
     open(){
         overlay.classList.add('active')
@@ -289,6 +288,65 @@ const Form = {
     }
 }
 
+const Animations = {
+    animationClose(){
+        let anima = document.querySelector('.animation-div')
+        anima.animate([
+            {height: `${anima.offsetHeight}px`},
+            {height: "0px"}
+        ], {
+            duration: 400,
+        })
+    },
+
+    animationOpen(){
+        let anima = document.querySelector('.animation-div')
+        let array = []
+    
+        Transaction.all.forEach(transaction => {
+            array.push(transaction.date)
+        })
+    
+        let transactionMonths = []
+    
+        array.forEach(date => {
+            const dates = date.split('/')
+            transactionMonths.push(dates[1])
+        })
+    
+        if(month === undefined){
+            const length = transactionMonths.length
+            anima.animate([
+                {height: "0px"},
+                {height: `${length * 60}px`}
+            ], {
+                delay: 400,
+                duration: 400,
+            })
+        }
+        else{
+            let counter = 0
+    
+            transactionMonths.forEach(transaction => {
+                if(Number(transaction) === month + 1){
+                    counter+= 1
+                }
+                else{
+                    console.log("Other month transactions")
+                }
+            })
+    
+            anima.animate([
+                {height: "0px"},
+                {height: `${(counter + 1) * 60}px`}
+            ], {
+                delay: 400,
+                duration: 400,
+            })
+        }
+        }
+}
+
 const App = {
     init() {
     Transaction.all.forEach((transaction, index) => {
@@ -316,73 +374,14 @@ const App = {
 
     },
     reload() {
-        animationClose()
-        animationOpen()
+        Animations.animationClose()
+        Animations.animationOpen()
         DOM.clearTransactions()
         App.init()
     },
 }
 
 App.init()
-
-function animationClose(){
-    let test = document.querySelector('.test')
-    test.animate([
-        {height: `${test.offsetHeight}px`},
-        {height: "0px"}
-    ], {
-        duration: 400,
-    })
-}
-
-function animationOpen(){
-
-    let test = document.querySelector('.test')
-
-    let array = []
- 
-    Transaction.all.forEach(transaction => {
-        array.push(transaction.date)
-    })
-
-    let transactionMonths = []
-
-    array.forEach(date => {
-        const dates = date.split('/')
-        transactionMonths.push(dates[1])
-    })
-
-    if(month === undefined){
-        const length = transactionMonths.length
-        test.animate([
-            {height: "0px"},
-            {height: `${length * 60}px`}
-        ], {
-            delay: 400,
-            duration: 400,
-        })
-    }
-    else{
-        let counter = 0
-
-        transactionMonths.forEach(transaction => {
-            if(Number(transaction) === month + 1){
-                counter+= 1
-            }
-            else{
-                console.log("Other month transactions")
-            }
-        })
-
-        test.animate([
-            {height: "0px"},
-            {height: `${(counter + 1) * 60}px`}
-        ], {
-            delay: 400,
-            duration: 400,
-        })
-    }
-    }
 
 btnNew.addEventListener('click', () => {
     Modal.open()
@@ -398,11 +397,3 @@ saveBtn.addEventListener("click", (evt) => {
     evt.preventDefault()
     Form.submit()
 })
-
-        // setTimeout(() => {
-        //     let test = document.querySelector('.test')
-        //     animationOpen(test)
-        // },200)
-    
-        // let test = document.querySelector('.test')
-        // animationOpen(index)

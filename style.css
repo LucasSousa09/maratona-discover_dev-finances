@@ -304,7 +304,7 @@ body{
 }
 /* Selector ------------------------------------------------ */
 
-.months-selector{
+.selector{
     background-color: transparent;
     color: var(--secondary-color);
 
@@ -315,12 +315,22 @@ body{
     font-weight: 500;
 }
 
-.months-selector option{
+.selector option{
     color: var(--dark-blue);
 }
 
-/* Table ------------------------------------------------ */
+/* Animation Div ------------------------------------------------ */
 
+.animation-div{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 3rem;
+ }
+
+/* Table ------------------------------------------------ */
 
 .table{
     width: 100%;
@@ -338,6 +348,7 @@ body{
 .tr .td:first-child{
     border-radius: .3rem 0 0 .3rem;
 }
+
 .thead .th:last-child,
 .tr .td:last-child{
     border-radius: 0 .3rem .3rem 0;
@@ -382,36 +393,6 @@ body{
 
     cursor: pointer;
 }
-
-/* Test ------------------------------------------------ */
-
-.test{
-   display: flex;
-   align-items: center;
-   justify-content: flex-start;
-   flex-direction: column;
-
-   overflow: hidden;
-
-   margin-bottom: 3rem;
-
-   animation: hideAndShow 3s ease forwards;
-}
-
-/* @keyframes hideAndShow{
-    0%{
-        height:500px;
-    }
-    50%{
-        height: 0;
-    }
-    100%{
-        height: 500px;
-    }
-} */
-
-
-/*  ------------------------------------------------ */
 
 /* Form ------------------------------------------------ */
 
