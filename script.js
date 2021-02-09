@@ -11,13 +11,38 @@ let month = new Date().getMonth()
 const months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
 const monthDisplay = document.querySelector('.month-display')
 
-
-monthDisplay.innerHTML = months[month]
-
+const selector = document.querySelector('.months-selector')
 const btnPrev = document.querySelector('.prev')    
 const btnNext = document.querySelector('.next')
 const btnAll = document.querySelector('.all')
 
+//Theme toggle 
+toggle.addEventListener('click', (evt) => {
+    const html = document.querySelector('html')
+    if(evt.target.checked === true){
+        html.classList.toggle('dark')
+    }
+    else{
+        html.classList.toggle('dark')
+    }
+}
+)
+
+//Selector receives the current month value
+selector.value = month
+
+//Changing the month by selector
+selector.addEventListener('change', (evt)=> {
+    if(evt.target.value === "undefined"){
+        month = undefined
+    }
+    else{
+        month = Number(evt.target.value)
+    }
+    App.reload()
+})
+
+//Changing the month via button
 btnPrev.addEventListener('click', () => {
     if(month === undefined){
         month = new Date().getMonth()
@@ -28,7 +53,7 @@ btnPrev.addEventListener('click', () => {
     else{
         month -= 1
     }
-    monthDisplay.innerHTML = months[month]
+    selector.value = month
     App.reload()
 })    
 btnNext.addEventListener('click', () => {
@@ -41,29 +66,18 @@ btnNext.addEventListener('click', () => {
     else{
         month += 1
     }
-    monthDisplay.innerHTML = months[month]
+    selector.value = month
+ 
     App.reload()
 })
 
 btnAll.addEventListener('click', () => {
     month = undefined;
-    monthDisplay.innerHTML = 'Todas'
+    selector.value = month
 
     App.reload()
 })
 
-toggle.addEventListener('click', (evt) => {
-    const html = document.querySelector('html')
-    if(evt.target.checked === true){
-        html.classList.toggle('dark')
-    }
-    else{
-        html.classList.toggle('dark')
-    }
-}
-)
-
-// const transactions = JSON.parse(localStorage.getItem('transaction'))
 const inputValue = []
 
 //Open and Close Modal
@@ -185,7 +199,7 @@ const DOM = {
 
         const html = `
                 <td class="td description">${description}</td>
-                <td class="td ${CSSclass}"> ${formatedAmount}</td>
+                <td class="td ${CSSclass}">${formatedAmount}</td>
                 <td class="td date">${date}</td>
                 <td class="td"><button id="${index}"class="btn-td"><img src="./assets/minus.svg" alt="Remover Transação"></button></td>
         `
@@ -302,12 +316,73 @@ const App = {
 
     },
     reload() {
+        animationClose()
+        animationOpen()
         DOM.clearTransactions()
         App.init()
     },
 }
 
 App.init()
+
+function animationClose(){
+    let test = document.querySelector('.test')
+    test.animate([
+        {height: `${test.offsetHeight}px`},
+        {height: "0px"}
+    ], {
+        duration: 400,
+    })
+}
+
+function animationOpen(){
+
+    let test = document.querySelector('.test')
+
+    let array = []
+ 
+    Transaction.all.forEach(transaction => {
+        array.push(transaction.date)
+    })
+
+    let transactionMonths = []
+
+    array.forEach(date => {
+        const dates = date.split('/')
+        transactionMonths.push(dates[1])
+    })
+
+    if(month === undefined){
+        const length = transactionMonths.length
+        test.animate([
+            {height: "0px"},
+            {height: `${length * 60}px`}
+        ], {
+            delay: 400,
+            duration: 400,
+        })
+    }
+    else{
+        let counter = 0
+
+        transactionMonths.forEach(transaction => {
+            if(Number(transaction) === month + 1){
+                counter+= 1
+            }
+            else{
+                console.log("Other month transactions")
+            }
+        })
+
+        test.animate([
+            {height: "0px"},
+            {height: `${(counter + 1) * 60}px`}
+        ], {
+            delay: 400,
+            duration: 400,
+        })
+    }
+    }
 
 btnNew.addEventListener('click', () => {
     Modal.open()
@@ -323,3 +398,11 @@ saveBtn.addEventListener("click", (evt) => {
     evt.preventDefault()
     Form.submit()
 })
+
+        // setTimeout(() => {
+        //     let test = document.querySelector('.test')
+        //     animationOpen(test)
+        // },200)
+    
+        // let test = document.querySelector('.test')
+        // animationOpen(index)

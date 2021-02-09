@@ -49,21 +49,39 @@
             <button class="btn-new">+ Nova transação</button>
             <h2 class="sr-only transactions-title">Transações</h2>
             <br/>
-            <table class="table" id="table">
-                <thead class="thead">
-                    <tr class="tr">
-                        <th class="th">Descrição</th>
-                        <th class="th">Valor</th>
-                        <th class="th">Data</th>
-                        <th class="th"></th>
-                    </tr>
-                </thead>
-                <tbody id="tbody"></tbody>
-            </table>
+            <div class="test">
+                <table class="table" id="table">
+                    <thead class="thead">
+                        <tr class="tr">
+                            <th class="th">Descrição</th>
+                            <th class="th">Valor</th>
+                            <th class="th">Data</th>
+                            <th class="th"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody" class="tbody"></tbody>
+                </table>
+            </div>
             <div class="btn-container">
-                <div class="month-selector">
+                <div class="months">
                     <button class="btn prev">Prev</button>
-                    <div class="month-display"></div>
+                    <div class="month-display">
+                        <select class="months-selector" name="" id="">
+                            <option value="0">Janeiro</option>
+                            <option value="1">Fevereiro</option>
+                            <option value="2">Março</option>
+                            <option value="3">Abril</option>
+                            <option value="4">Maio</option>
+                            <option value="5">Junho</option>
+                            <option value="6">Julho</option>
+                            <option value="7">Agosto</option>
+                            <option value="8">Setembro</option>
+                            <option value="9">Outubro</option>
+                            <option value="10">Novembro</option>
+                            <option value="11">Dezembro</option>
+                            <option value="undefined">Todas</option>>
+                        </select>
+                    </div>
                     <button class="btn next">Next</button>
                 </div>
                 <div class="all-months">
