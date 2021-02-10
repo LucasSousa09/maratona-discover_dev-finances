@@ -79,11 +79,19 @@ body{
 
     text-align: center;
 }
+
+.header-content{
+    position: relative;
+
+    width: min(90vw, 800px);
+    margin: auto;
+}
+
 /* Search-Bar ------------------------------------------------ */
 
 .search-container{
     position: absolute;
-    right: 10%;
+    right:0;
 
     display: flex;
     align-items: center;
@@ -142,17 +150,14 @@ body{
     background-color: #70c05f;
 }
 
-
-
-
 /* Toggle ------------------------------------------------ */
 
 .toggle-container{
+    position: absolute;
+    right:0;
+    top: 0;
     display: flex;
     align-items: flex-end;
-    position: absolute;
-    right: 10%;
-    top: 2rem;
 }
 
 .toggle{
