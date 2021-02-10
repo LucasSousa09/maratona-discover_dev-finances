@@ -25,7 +25,7 @@ html.dark {
     --primary-color: #042c13;
     --secondary-color: #e4e4e4;
 
-    --primary-card-background: #e4e4e4;
+    --primary-card-background: #042c13;
     --grayish: #455282;
 }
 
@@ -171,14 +171,26 @@ body{
     margin-bottom:.5rem;
 }
 
+html.dark .input-card,
+html.dark .output-card
+{
+    border: 1px solid var(--secondary-color); 
+}
+html.dark .result-card{
+    color: var(--secondary-color);
+}
+
+
 .card{
     background-color: var(--primary-card-background);
-    color: var(--dark-blue);
+    color: var(--secondary-color);
 
     border-radius: .25rem;
     padding: 1rem;
 
     margin-bottom: 1.25rem;
+
+    transition: background 0.4s ease-in-out;
 }
 
 .card.result-card{
@@ -331,6 +343,47 @@ body{
  }
 
 /* Table ------------------------------------------------ */
+/* Dark Table ------------------------------------------------ */
+    html.dark .table * {
+        opacity:1;
+    }
+
+    html.dark .thead .th:first-child,
+    html.dark .tr .td:first-child{
+        border-left: 1px solid var(--secondary-color);
+    }
+    html.dark .thead .th:last-child,
+    html.dark .tr .td:last-child{
+        border-right: 1px solid var(--secondary-color);
+    }
+    
+    html.dark .th{
+        border-top: 1px solid var(--secondary-color);
+        border-bottom: 1px solid var(--secondary-color);
+        color: var(--secondary-color);
+    }
+    html.dark .td{
+        border-top: 1px solid var(--secondary-color);
+        border-bottom: 1px solid var(--secondary-color);
+    }
+    html.dark .td.description,
+    html.dark .td.date
+    {
+        color: var(--secondary-color);
+    }
+
+    html.dark .td.negative{
+        font-weight: 500;
+    }
+    
+    html.dark .td.positive{
+        font-weight: 500;
+    }
+
+
+/* ---------------------------------------------------------- */
+
+
 
 .table{
     width: 100%;

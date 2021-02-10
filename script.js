@@ -80,6 +80,7 @@ btnNext.addEventListener('click', () => {
 
 btnAll.addEventListener('click', () => {
     month = undefined;
+    yearSelector.value = "undefined"
     selector.value = month
 
     App.reload()
@@ -148,28 +149,69 @@ const Transaction = {
     incomes(){
         let income = 0
 
-        if(month === undefined){
+        let selectedYear = yearSelector.value
+
+        if(selectedYear === "undefined"){
+          if(month === undefined){
             Transaction.all.forEach(transaction => {
                 if(transaction.type === 'INCOME'){
                     income += Number(transaction.amount)
                 }
             })
+          }
+          else{
+              Transaction.all.forEach(transaction => {
+                  let date  = transaction.date.split("/")
+                  if(Number(date[1]) === month + 1 && transaction.type === 'INCOME'){
+                      income += Number(transaction.amount)
+                  }
+              })    
+          }
         }
-        else{
+        else if(Number(selectedYear) >= 2012 && Number(selectedYear) <= 2021){
+          if(month === undefined){
             Transaction.all.forEach(transaction => {
-                let date  = transaction.date.split("/")
-                if(Number(date[1]) === month + 1 && transaction.type === 'INCOME'){
+                if(transaction.type === 'INCOME'){
                     income += Number(transaction.amount)
                 }
-            })    
-        }        
+            })
+          }
+          else{
+              Transaction.all.forEach(transaction => {
+                  let date  = transaction.date.split("/")
+                  if(Number(date[1]) === month + 1 && transaction.type === 'INCOME' && date[2] === selectedYear){
+                      income += Number(transaction.amount)
+                  }
+              })    
+          }
+        }     
 
         return income
     },
 
     expenses(){
         let expense = 0
-        if(month === undefined){
+        let selectedYear = yearSelector.value
+
+        if(selectedYear === "undefined"){
+          if(month === undefined){
+              Transaction.all.forEach(transaction => {
+                  if(transaction.type === 'EXPENSE'){
+                      expense += Number(transaction.amount)
+                  }
+              })
+          }
+          else{
+              Transaction.all.forEach(transaction => {
+                  let date  = transaction.date.split("/")
+                  if(Number(date[1]) === month + 1 && transaction.type === 'EXPENSE'){
+                      expense += Number(transaction.amount)
+                  }
+              })    
+          }        
+        }
+        else if(Number(selectedYear) >= 2012 && Number(selectedYear) <= 2021){
+          if(month === undefined){
             Transaction.all.forEach(transaction => {
                 if(transaction.type === 'EXPENSE'){
                     expense += Number(transaction.amount)
@@ -179,12 +221,12 @@ const Transaction = {
         else{
             Transaction.all.forEach(transaction => {
                 let date  = transaction.date.split("/")
-                if(Number(date[1]) === month + 1 && transaction.type === 'EXPENSE'){
+                if(Number(date[1]) === month + 1 && transaction.type === 'EXPENSE' && date[2] === selectedYear){
                     expense += Number(transaction.amount)
                 }
             })    
         }        
-        
+        }
         return expense
     },
 
