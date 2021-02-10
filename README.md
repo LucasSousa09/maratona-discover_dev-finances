@@ -15,6 +15,6 @@
 
 ![](assets/dev_finances_v2_search-bar.jpg)
 
-* Chegando no espaço com **um <selector/>** massa pra poder visualizar os resultados de um mês específico
+* Chegando no espaço com **um menu de opções** massa pra poder visualizar os resultados de um mês específico
 
 ![](assets/dev_finances_v2_selector.jpg)
