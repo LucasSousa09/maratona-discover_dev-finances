@@ -4,7 +4,6 @@
 🚀 **Uma maratona incrível, um projeto espetacular, uma oportunidade imperdível com o amor da Rocketseat** 🚀
 
 ![](assets/dev_finances_v2.jpg)
-![](assets/dev_finances.jpg)
 
 ## Mas o foguete não pode parar...
 
