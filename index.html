@@ -15,9 +15,12 @@
                 <div class="ball"></div>
             </label>
         </div>
+        <div class="search-container">
+            <input class="search-bar inactive" type="text" placeholder="Procure uma transação">
+            <button class="search-button"><img src="./assets/search-icon@3x.png" alt="search-icon" srcset=""></button>
+        </div>
     </header>
-
-    
+   
     <main class="container" description>
         
         <section class="balance-container">
@@ -79,7 +82,8 @@
                                 <option value="9">Outubro</option>
                                 <option value="10">Novembro</option>
                                 <option value="11">Dezembro</option>
-                                <option value="undefined">Todas</option>>
+                                <option value="undefined">Todas</option>
+                                <option value="pesquisa" disabled>Pesquisa</option>    
                             </select>
                             <select class="selector year-selector">
                                 <option value="2021">2021</option>
@@ -93,6 +97,7 @@
                                 <option value="2013">2013</option>
                                 <option value="2012">2012</option>
                                 <option value="undefined">Todos</option>
+                                <option value="pesquisa" disabled>Pesquisa</option>        
                             </select>
                         </div>
                     <button class="btn next">Next</button>
@@ -129,9 +134,11 @@
         <div class="overlay"></div>
     
     </main>
+
     <footer class="footer">
         <p>dev.finance$</p>
     </footer>
+
     <script src="./script.js"></script>
 </body>
 </html>

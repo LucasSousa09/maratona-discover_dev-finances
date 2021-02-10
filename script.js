@@ -18,6 +18,87 @@ const btnPrev = document.querySelector('.prev')
 const btnNext = document.querySelector('.next')
 const btnAll = document.querySelector('.all')
 
+const searchButton = document.querySelector('.search-button')
+const searchBar = document.querySelector('.search-bar')
+
+//Search Functionality
+
+function searchTransaction(){
+        let search = searchBar.value
+        const regExp = new RegExp(search, 'gi')
+
+        let searchedResult = Transaction.all.filter(transaction => {
+            return regExp.test(transaction.description) === true
+        })
+
+        if(searchedResult.length > 0){
+            searchBar.value = ''
+            searchBar.classList.toggle('inactive')
+
+            selector.value = 'pesquisa'
+            yearSelector.value = 'pesquisa'
+
+            DOM.clearTransactions()
+            calcSpecificTransaction(searchedResult)
+            for(let i = 0; i < searchedResult.length; i+= 1){
+                DOM.addTransactions(searchedResult[i])
+            }
+        }
+        else{
+            searchBar.style.border = "4px solid red"
+        }
+}
+
+function calcSpecificTransaction(searchedResult){
+    let income = 0
+    let expense = 0
+    searchedResult.forEach(result => {
+        if(result.type === 'EXPENSE'){
+            expense += result.amount
+        }
+        else if(result.type === 'INCOME'){
+            income += result.amount
+        }
+        else{
+            console.log("Something unexpected happened")
+        }
+    })
+    let result = income - expense
+
+    const total = document.querySelector('.card.result-card')
+    document.querySelector('.money.input').innerHTML = Utils.formatCurrency(income, 'INCOME')
+    document.querySelector('.money.output').innerHTML = Utils.formatCurrency(expense, 'EXPENSES')
+    result < 0 ? total.classList.add('negative') : total.classList.remove('negative')
+    document.querySelector('.money.result').innerHTML = Utils.formatCurrency(result, 'INCOME')
+}
+
+searchButton.addEventListener('click', () => {
+    searchBar.focus()
+   if(searchBar.value !== ''){
+        searchTransaction()
+   }
+   else{
+        searchBar.classList.toggle('inactive')
+    }
+})
+
+searchBar.addEventListener('keyup',(evt) => {
+    if(evt.keyCode === 13){
+        searchTransaction()
+    }
+    else{
+        searchBar.style.border = "none"
+    }
+})
+
+//Reset Year
+function resetYear(){
+    if(yearSelector.value === 'pesquisa'){
+        let year = 1900 + new Date().getYear()
+        yearSelector.value = year
+    }
+}
+
 //Theme toggle 
 toggle.addEventListener('click', (evt) => {
     const html = document.querySelector('html')
@@ -61,6 +142,7 @@ btnPrev.addEventListener('click', () => {
         month -= 1
     }
     selector.value = month
+    resetYear()
     App.reload()
 })    
 btnNext.addEventListener('click', () => {
@@ -74,7 +156,7 @@ btnNext.addEventListener('click', () => {
         month += 1
     }
     selector.value = month
- 
+    resetYear()
     App.reload()
 })
 
@@ -439,8 +521,8 @@ const App = {
         }
     })
 
-    const removeBtns = document.querySelectorAll('.btn-td')
     //Remove Transaction
+    const removeBtns = document.querySelectorAll('.btn-td')
     removeBtns.forEach( (btn, idx) => {
         btn.addEventListener('click', () => {
             Transaction.remove(idx)
