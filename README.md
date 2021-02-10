@@ -9,7 +9,7 @@
 
 * Saindo do chão com um **Tema escuro**, simples mas eficiente:
 
-![](assets/dev_finances_v2_dark-mode.jpg)
+![](assets/dev_finances_v2_dark_mode.jpg)
 
 * Atingindo a extratosfera com uma **Barra de pesquisa** pra agilizar na hora de pesquisar uma transação
 
