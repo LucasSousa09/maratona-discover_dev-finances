@@ -1,11 +1,14 @@
-const btnNew = document.querySelector('.btn-new')
+const btnNewTransaction = document.querySelector('.btn-new')
 const overlay = document.querySelector('.overlay')
 
 const form = document.getElementById('form')
-const cancelBtn = document.querySelector('.form-btn.cancel')
+const btnCancelTransaction = document.querySelector('.form-btn.cancel')
 const saveBtn = document.querySelector('.form-btn.save')
 
+const settings_container = document.querySelector('.show-settings')
+const settings_button = document.querySelector('.settings-button')
 const toggle = document.getElementById('theme-toggle')
+const animation_toggle = document.getElementById('animation-toggle')
 
 let month = new Date().getMonth()
 const monthDisplay = document.querySelector('.selector-container')
@@ -19,6 +22,34 @@ const btnAll = document.querySelector('.all')
 
 const searchButton = document.querySelector('.search-button')
 const searchBar = document.querySelector('.search-bar')
+
+//Settings
+settings_button.addEventListener('click', () => {
+    settings_container.classList.toggle('active')
+})
+
+//Theme toggle 
+toggle.addEventListener('click', (evt) => {
+    const html = document.querySelector('html')
+    if(evt.target.checked === true){
+        html.classList.toggle('dark')
+    }
+    else{
+        html.classList.toggle('dark')
+    }
+}
+)
+
+//Animation toggle
+let animationsOff = false
+animation_toggle.addEventListener('change', (evt) => {
+   if(evt.target.checked){
+       animationsOff = false
+   }
+   else{
+       animationsOff = true
+   }
+})
 
 //Search Button and Bar
 searchButton.addEventListener('click', () => {
@@ -39,22 +70,10 @@ searchBar.addEventListener('keyup',(evt) => {
     }
 })
 
-//Theme toggle 
-toggle.addEventListener('click', (evt) => {
-    const html = document.querySelector('html')
-    if(evt.target.checked === true){
-        html.classList.toggle('dark')
-    }
-    else{
-        html.classList.toggle('dark')
-    }
-}
-)
-
-//Selector receives the current month value
+//Selector initially receives the current month value
 selector.value = month
 
-//Changing the month by selector
+//Changing the month and year by selector
 selector.addEventListener('change', (evt)=> {
     if(evt.target.value === "undefined"){
         month = undefined
@@ -64,7 +83,6 @@ selector.addEventListener('change', (evt)=> {
     }
     App.reload()
 })
-//Changing the year by selector
 yearSelector.addEventListener('change', ()=> {
     App.reload()
 })
@@ -99,7 +117,6 @@ btnNext.addEventListener('click', () => {
     Search.resetYear()
     App.reload()
 })
-
 btnAll.addEventListener('click', () => {
     month = undefined;
     yearSelector.value = "undefined"
@@ -245,16 +262,20 @@ const Transaction = {
         return total
     },
 
+    undefinedMonth(value, type){
+        Transaction.all.forEach(transaction => {
+            if(transaction.type === type){
+                value += Number(transaction.amount)
+            }
+        })
+    },
+
     calc(value, type){
         let selectedYear = yearSelector.value
 
         if(selectedYear === "undefined"){
           if(month === undefined){
-            Transaction.all.forEach(transaction => {
-                if(transaction.type === type){
-                    value += Number(transaction.amount)
-                }
-            })
+            this.undefinedMonth(value, type)
           }
           else{
               Transaction.all.forEach(transaction => {
@@ -267,11 +288,7 @@ const Transaction = {
         }
         else if(Number(selectedYear) >= 2012 && Number(selectedYear) <= 2021){
           if(month === undefined){
-            Transaction.all.forEach(transaction => {
-                if(transaction.type === type){
-                    value += Number(transaction.amount)
-                }
-            })
+            this.undefinedMonth(value, type)
           }
           else{
               Transaction.all.forEach(transaction => {
@@ -391,6 +408,7 @@ const Animations = {
     animationHeight(initialHeight, finalHeight, delay ){
         let anima = document.querySelector('.animation-div')
 
+        console.log(finalHeight)
         anima.animate([
             {height: `${initialHeight}px`},
             {height: `${finalHeight * 60}px`}
@@ -437,12 +455,16 @@ const Animations = {
              let array = transaction.split('/')
              let thisYear = array[1]
              let thisMonth = Number(array[0])
+             if(selectedYear === 'undefined'){
+                 //console.log('Do nothing, to not bug the animation')
+             }
              //Subtract from the animationHeight the number of transactions that do not match the date selection
-             if(selectedYear !== thisYear && thisMonth === month + 1){
+             else if(selectedYear !== thisYear && thisMonth === month + 1){
                animationHeight-= 1
              }
            })
     
+           
             Animations.animationHeight(0, animationHeight , 400)
         }
     }
@@ -489,8 +511,10 @@ const App = {
 
     },
     reload() {
-        Animations.animationClose()
-        Animations.animationOpen()
+        if(animationsOff === false){
+            Animations.animationClose()
+            Animations.animationOpen()
+        }
         DOM.clearTransactions()
         App.init()
     },
@@ -498,11 +522,11 @@ const App = {
 
 App.init()
 
-btnNew.addEventListener('click', () => {
+btnNewTransaction.addEventListener('click', () => {
     Modal.open()
 })
 
-cancelBtn.addEventListener('click', (evt) => {
+btnCancelTransaction.addEventListener('click', (evt) => {
     evt.preventDefault()
     Modal.close()
 })

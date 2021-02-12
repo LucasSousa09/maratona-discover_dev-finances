@@ -10,12 +10,28 @@
     <header class="header">
         <div class="header-content">
             <img src="./assets/logo.svg" alt="Logo Dev Finance">
-            <div class="toggle-container">
-                <input type="checkbox" id="theme-toggle" class="toggle">
-                <label class="label-toggle"for="theme-toggle">
-                    <div class="ball"></div>
-                </label>
+
+            <div class="show-settings">
+                <div class="settings-inside-container theme">
+                    <span class="span">Tema:</span>
+                    <input type="checkbox" id="theme-toggle" class="toggle">
+                    <label class="label-toggle"for="theme-toggle">
+                        <div class="ball"></div>
+                    </label>
+                </div>
+                <div class="settings-inside-container animations">
+                    <span class="span">Animações:</span>
+                    <input type="checkbox" id="animation-toggle" class="toggle" checked>
+                    <label class="label-toggle"for="animation-toggle">
+                        <div class="ball"></div>
+                    </label>
+                </div>
             </div>
+
+            <div class="settings-container">
+                <button class="settings-button" ><img class="settings-icon" src="./assets/settings-icon.png" alt="Ferramentas"></button>
+            </div>
+
             <div class="search-container">
                 <input class="search-bar inactive" type="text" placeholder="Procure uma transação">
                 <button class="search-button"><img src="./assets/search-icon@3x.png" alt="search-icon" srcset=""></button>
