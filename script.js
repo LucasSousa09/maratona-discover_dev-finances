@@ -388,81 +388,64 @@ const Form = {
 }
 
 const Animations = {
-    animationClose(){
+    animationHeight(initialHeight, finalHeight, delay ){
         let anima = document.querySelector('.animation-div')
+
         anima.animate([
-            {height: `${anima.offsetHeight}px`},
-            {height: "0px"}
+            {height: `${initialHeight}px`},
+            {height: `${finalHeight * 60}px`}
         ], {
+            delay: delay,
             duration: 400,
         })
     },
 
-    animationOpen(){
+    animationClose(){
         let anima = document.querySelector('.animation-div')
+        Animations.animationHeight(anima.offsetHeight, 0 , 0)
+    },
+
+    animationOpen(){
         let selectedYear = yearSelector.value
-        
-        let array = []
-    
-        Transaction.all.forEach(transaction => {
-            array.push(transaction.date)
-        })
     
         let transactionMonths = []
         let transactionMonthAndYear = []
-    
-        array.forEach(date => {
-            const dates = date.split('/')
+
+        Transaction.all.forEach(transaction => {
+            const dates = transaction.date.split('/')
             transactionMonths.push(dates[1])
             transactionMonthAndYear.push(`${dates[1]}/${dates[2]}`)
         })
-
+    
         if(month === undefined){
-            const length = transactionMonths.length
-            anima.animate([
-                {height: "0px"},
-                {height: `${length * 60}px`}
-            ], {
-                delay: 400,
-                duration: 400,
-            })
+            let length = transactionMonths.length
+            //Adding the thead height
+            length += 1
+            Animations.animationHeight(0, length , 400)
         }
         else{
-            let counter = 0
+            let animationHeight = 1
     
             transactionMonths.forEach(transaction => {
+                //Add to the animationHeight the number of transactions that match the selected date
                 if(Number(transaction) === month + 1){
-                    counter+= 1
-                }
-                else{
-                    // console.log("Other month transactions")
+                    animationHeight+= 1
                 }
             })
 
            transactionMonthAndYear.forEach(transaction => {
-             array = transaction.split('/')
-             thisYear = array[1]
-             thisMonth = Number(array[0])
-             if (selectedYear === "undefined"){
-               //console.log('Do nothing!')
-             }
-             else if(selectedYear !== thisYear && thisMonth === month + 1){
-               counter-= 1
-             }
-             else{
-               //console.log('Something expected hapened')
+             let array = transaction.split('/')
+             let thisYear = array[1]
+             let thisMonth = Number(array[0])
+             //Subtract from the animationHeight the number of transactions that do not match the date selection
+             if(selectedYear !== thisYear && thisMonth === month + 1){
+               animationHeight-= 1
              }
            })
     
-            anima.animate([
-                {height: "0px"},
-                {height: `${(counter + 1) * 60}px`}
-            ], {
-                delay: 400,
-                duration: 400,
-            })
+            Animations.animationHeight(0, animationHeight , 400)
         }
-        }
+    }
 }
 
 const App = {
