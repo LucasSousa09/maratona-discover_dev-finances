@@ -338,14 +338,14 @@ html.dark .result-card{
     padding-bottom: 2rem;
 }
 
-.months{
+.dates{
     display: flex;
     align-items: center;
     justify-content: flex-start;
 
     width: 80%;
 }
-.all-months{
+.all-transactions{
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -379,7 +379,7 @@ html.dark .result-card{
     opacity: 0.7;
 }
 
-.month-display{
+.selectors-container{
     margin: 0 auto;
     color: var(--secondary-color);
 
@@ -659,12 +659,12 @@ html.dark .result-card{
         justify-content: center;
     }
 
-    .months{
+    .dates{
         justify-content: space-between;
         width: 100%;
     }
 
-    .all-months{
+    .all-transactions{
         margin-top: 1rem;
         width: 100%;
     }

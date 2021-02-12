@@ -8,8 +8,7 @@ const saveBtn = document.querySelector('.form-btn.save')
 const toggle = document.getElementById('theme-toggle')
 
 let month = new Date().getMonth()
-const months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
-const monthDisplay = document.querySelector('.month-display')
+const monthDisplay = document.querySelector('.selector-container')
 
 const selector = document.querySelector('.months-selector')
 const yearSelector = document.querySelector('.year-selector')
