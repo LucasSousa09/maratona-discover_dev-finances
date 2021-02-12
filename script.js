@@ -20,8 +20,7 @@ const btnAll = document.querySelector('.all')
 const searchButton = document.querySelector('.search-button')
 const searchBar = document.querySelector('.search-bar')
 
-//Search Functionality
-
+//Search Button and Bar
 searchButton.addEventListener('click', () => {
     searchBar.focus()
    if(searchBar.value !== ''){
@@ -31,7 +30,6 @@ searchButton.addEventListener('click', () => {
         searchBar.classList.toggle('inactive')
     }
 })
-
 searchBar.addEventListener('keyup',(evt) => {
     if(evt.keyCode === 13){
         Search.searchTransaction()
@@ -84,7 +82,7 @@ btnPrev.addEventListener('click', () => {
         month -= 1
     }
     selector.value = month
-    resetYear()
+    Search.resetYear()
     App.reload()
 })    
 btnNext.addEventListener('click', () => {
@@ -98,7 +96,7 @@ btnNext.addEventListener('click', () => {
         month += 1
     }
     selector.value = month
-    resetYear()
+    Search.resetYear()
     App.reload()
 })
 
@@ -109,8 +107,6 @@ btnAll.addEventListener('click', () => {
 
     App.reload()
 })
-
-const inputValue = []
 
 const Search = {
     searchTransaction(){
@@ -229,92 +225,64 @@ const Transaction = {
     },
 
     incomes(){
-        let income = 0
+        let income = 0     
 
-        let selectedYear = yearSelector.value
-
-        if(selectedYear === "undefined"){
-          if(month === undefined){
-            Transaction.all.forEach(transaction => {
-                if(transaction.type === 'INCOME'){
-                    income += Number(transaction.amount)
-                }
-            })
-          }
-          else{
-              Transaction.all.forEach(transaction => {
-                  let date  = transaction.date.split("/")
-                  if(Number(date[1]) === month + 1 && transaction.type === 'INCOME'){
-                      income += Number(transaction.amount)
-                  }
-              })    
-          }
-        }
-        else if(Number(selectedYear) >= 2012 && Number(selectedYear) <= 2021){
-          if(month === undefined){
-            Transaction.all.forEach(transaction => {
-                if(transaction.type === 'INCOME'){
-                    income += Number(transaction.amount)
-                }
-            })
-          }
-          else{
-              Transaction.all.forEach(transaction => {
-                  let date  = transaction.date.split("/")
-                  if(Number(date[1]) === month + 1 && transaction.type === 'INCOME' && date[2] === selectedYear){
-                      income += Number(transaction.amount)
-                  }
-              })    
-          }
-        }     
+        income = Transaction.calc(income, 'INCOME')
 
         return income
     },
 
     expenses(){
         let expense = 0
-        let selectedYear = yearSelector.value
+        
+        expense = Transaction.calc(expense, 'EXPENSE')
 
-        if(selectedYear === "undefined"){
-          if(month === undefined){
-              Transaction.all.forEach(transaction => {
-                  if(transaction.type === 'EXPENSE'){
-                      expense += Number(transaction.amount)
-                  }
-              })
-          }
-          else{
-              Transaction.all.forEach(transaction => {
-                  let date  = transaction.date.split("/")
-                  if(Number(date[1]) === month + 1 && transaction.type === 'EXPENSE'){
-                      expense += Number(transaction.amount)
-                  }
-              })    
-          }        
-        }
-        else if(Number(selectedYear) >= 2012 && Number(selectedYear) <= 2021){
-          if(month === undefined){
-            Transaction.all.forEach(transaction => {
-                if(transaction.type === 'EXPENSE'){
-                    expense += Number(transaction.amount)
-                }
-            })
-        }
-        else{
-            Transaction.all.forEach(transaction => {
-                let date  = transaction.date.split("/")
-                if(Number(date[1]) === month + 1 && transaction.type === 'EXPENSE' && date[2] === selectedYear){
-                    expense += Number(transaction.amount)
-                }
-            })    
-        }        
-        }
         return expense
     },
 
     total(){
         let total = Transaction.incomes() - Transaction.expenses()
         return total
+    },
+
+    calc(value, type){
+        let selectedYear = yearSelector.value
+
+        if(selectedYear === "undefined"){
+          if(month === undefined){
+            Transaction.all.forEach(transaction => {
+                if(transaction.type === type){
+                    value += Number(transaction.amount)
+                }
+            })
+          }
+          else{
+              Transaction.all.forEach(transaction => {
+                  let date  = transaction.date.split("/")
+                  if(Number(date[1]) === month + 1 && transaction.type === type){
+                      value += Number(transaction.amount)
+                  }
+              })    
+          }
+        }
+        else if(Number(selectedYear) >= 2012 && Number(selectedYear) <= 2021){
+          if(month === undefined){
+            Transaction.all.forEach(transaction => {
+                if(transaction.type === type){
+                    value += Number(transaction.amount)
+                }
+            })
+          }
+          else{
+              Transaction.all.forEach(transaction => {
+                  let date  = transaction.date.split("/")
+                  if(Number(date[1]) === month + 1 && transaction.type === type && date[2] === selectedYear){
+                      value += Number(transaction.amount)
+                  }
+              })    
+          }
+        }
+        return value;
     }
 }
 
@@ -503,6 +471,8 @@ const App = {
         let date  = transaction.date.split("/")
         let year = yearSelector.value
 
+        //If year is undefined it shows results of all years
+        //If month is undefined it show results of all months
         if(year === "undefined"){
             if(month === undefined){
                 DOM.addTransactions(transaction, index)
