@@ -22,59 +22,10 @@ const searchBar = document.querySelector('.search-bar')
 
 //Search Functionality
 
-function searchTransaction(){
-        let search = searchBar.value
-        const regExp = new RegExp(search, 'gi')
-
-        let searchedResult = Transaction.all.filter(transaction => {
-            return regExp.test(transaction.description) === true
-        })
-
-        if(searchedResult.length > 0){
-            searchBar.value = ''
-            searchBar.classList.toggle('inactive')
-
-            selector.value = 'pesquisa'
-            yearSelector.value = 'pesquisa'
-
-            DOM.clearTransactions()
-            calcSpecificTransaction(searchedResult)
-            for(let i = 0; i < searchedResult.length; i+= 1){
-                DOM.addTransactions(searchedResult[i])
-            }
-        }
-        else{
-            searchBar.style.border = "4px solid red"
-        }
-}
-
-function calcSpecificTransaction(searchedResult){
-    let income = 0
-    let expense = 0
-    searchedResult.forEach(result => {
-        if(result.type === 'EXPENSE'){
-            expense += result.amount
-        }
-        else if(result.type === 'INCOME'){
-            income += result.amount
-        }
-        else{
-            console.log("Something unexpected happened")
-        }
-    })
-    let result = income - expense
-
-    const total = document.querySelector('.card.result-card')
-    document.querySelector('.money.input').innerHTML = Utils.formatCurrency(income, 'INCOME')
-    document.querySelector('.money.output').innerHTML = Utils.formatCurrency(expense, 'EXPENSES')
-    result < 0 ? total.classList.add('negative') : total.classList.remove('negative')
-    document.querySelector('.money.result').innerHTML = Utils.formatCurrency(result, 'INCOME')
-}
-
 searchButton.addEventListener('click', () => {
     searchBar.focus()
    if(searchBar.value !== ''){
-        searchTransaction()
+        Search.searchTransaction()
    }
    else{
         searchBar.classList.toggle('inactive')
@@ -83,20 +34,12 @@ searchButton.addEventListener('click', () => {
 
 searchBar.addEventListener('keyup',(evt) => {
     if(evt.keyCode === 13){
-        searchTransaction()
+        Search.searchTransaction()
     }
     else{
         searchBar.style.border = "none"
     }
 })
-
-//Reset Year
-function resetYear(){
-    if(yearSelector.value === 'pesquisa'){
-        let year = 1900 + new Date().getYear()
-        yearSelector.value = year
-    }
-}
 
 //Theme toggle 
 toggle.addEventListener('click', (evt) => {
@@ -168,6 +111,64 @@ btnAll.addEventListener('click', () => {
 })
 
 const inputValue = []
+
+const Search = {
+    searchTransaction(){
+        let search = searchBar.value
+        const regExp = new RegExp(search, 'gi')
+
+        let searchedResult = Transaction.all.filter(transaction => {
+            return regExp.test(transaction.description) === true
+        })
+
+        if(searchedResult.length > 0){
+            searchBar.value = ''
+            searchBar.classList.toggle('inactive')
+
+            selector.value = 'pesquisa'
+            yearSelector.value = 'pesquisa'
+
+            DOM.clearTransactions()
+            Search.calcSpecificTransaction(searchedResult)
+            for(let i = 0; i < searchedResult.length; i+= 1){
+                DOM.addTransactions(searchedResult[i])
+            }
+        }
+        else{
+            searchBar.style.border = "4px solid red"
+        }
+    },
+
+    calcSpecificTransaction(searchedResult){
+        let income = 0
+        let expense = 0
+        searchedResult.forEach(result => {
+            if(result.type === 'EXPENSE'){
+                expense += result.amount
+            }
+            else if(result.type === 'INCOME'){
+                income += result.amount
+            }
+            else{
+                console.log("Something unexpected happened")
+            }
+        })
+        let result = income - expense
+    
+        const total = document.querySelector('.card.result-card')
+        document.querySelector('.money.input').innerHTML = Utils.formatCurrency(income, 'INCOME')
+        document.querySelector('.money.output').innerHTML = Utils.formatCurrency(expense, 'EXPENSES')
+        result < 0 ? total.classList.add('negative') : total.classList.remove('negative')
+        document.querySelector('.money.result').innerHTML = Utils.formatCurrency(result, 'INCOME')
+    },
+
+    resetYear(){
+        if(yearSelector.value === 'pesquisa'){
+            let year = 1900 + new Date().getYear()
+            yearSelector.value = year
+        }
+    }
+}
 
 const Modal = {
     open(){
