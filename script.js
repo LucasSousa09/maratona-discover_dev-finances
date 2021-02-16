@@ -9,6 +9,7 @@ const settings_container = document.querySelector('.show-settings')
 const settings_button = document.querySelector('.settings-button')
 const toggle = document.getElementById('theme-toggle')
 const animation_toggle = document.getElementById('animation-toggle')
+const order_toggle = document.getElementById('order-toggle')
 
 let month = new Date().getMonth()
 const monthDisplay = document.querySelector('.selector-container')
@@ -49,6 +50,11 @@ animation_toggle.addEventListener('change', (evt) => {
    else{
        animationsOff = true
    }
+})
+
+//Order toggle
+order_toggle.addEventListener('change', () => {
+    App.reload()
 })
 
 //Search Button and Bar
@@ -482,48 +488,95 @@ const App = {
         TransactionArray.push(Transaction.all[c])
     }
 
-    for(let c = 0; c < TransactionLength; c += 1){
-        let biggestYear = 0
-        let biggestMonth = 0
-        let biggestDay = 0
+    if(order_toggle.checked){
+        for(let c = 0; c < TransactionLength; c += 1){
+            let biggestYear = 0
+            let biggestMonth = 0
+            let biggestDay = 0
+            
+            let TransactionIndex = ''
         
-        let TransactionIndex = ''
-    
-        TransactionArray.forEach((transaction, index) => {
-            let date  = transaction.date.split("/")
-            let year = date[2]
-            let month = date[1]
-            let day = date[0]
-    
-            if(year > biggestYear){
-                biggestYear = year
-                biggestMonth = 0
-                biggestDay = 0
-    
-                if(month > biggestMonth){
-                    biggestMonth = month
-                    if(day > biggestDay){
-                        biggestDay = day        
-                    }   
+            TransactionArray.forEach((transaction, index) => {
+                let date  = transaction.date.split("/")
+                let year = date[2]
+                let month = date[1]
+                let day = date[0]
+        
+                if(year > biggestYear){
+                    biggestYear = year
+                    biggestMonth = 0
+                    biggestDay = 0
+        
+                    if(month > biggestMonth){
+                        biggestMonth = month
+                        if(day > biggestDay){
+                            biggestDay = day        
+                        }   
+                    }
+                    TransactionIndex = index   
                 }
-                TransactionIndex = index   
-            }
-            else if(year === biggestYear){
-                if(month > biggestMonth){
-                    biggestMonth = month
-                    TransactionIndex = index  
-                }
-                else if(biggestMonth === month){
-                    if(day >= biggestDay){
-                        biggestDay = day
+                else if(year === biggestYear){
+                    if(month > biggestMonth){
+                        biggestMonth = month
                         TransactionIndex = index  
                     }
+                    else if(biggestMonth === month){
+                        if(day >= biggestDay){
+                            biggestDay = day
+                            TransactionIndex = index  
+                        }
+                    }
                 }
-            }
-        })
-    
-        newTransactionArray.push(TransactionArray[TransactionIndex])
-        TransactionArray.splice(TransactionIndex, 1)
+            })
+        
+            newTransactionArray.push(TransactionArray[TransactionIndex])
+            TransactionArray.splice(TransactionIndex, 1)
+        }
+    }
+    else{
+        for(let c = 0; c < TransactionLength; c += 1){
+            let smallestYear = 3000
+            let smallestMonth = 3000
+            let smallestDay = 3000
+            
+            let TransactionIndex = ''
+        
+            TransactionArray.forEach((transaction, index) => {
+                let date  = transaction.date.split("/")
+                let year = date[2]
+                let month = date[1]
+                let day = date[0]
+        
+                if(year < smallestYear){
+                    smallestYear = year
+                    smallestMonth = 3000
+                    smallestDay = 3000
+        
+                    if(month < smallestMonth){
+                        smallestMonth = month
+                        if(day < smallestDay){
+                            smallestDay = day        
+                        }   
+                    }
+                    TransactionIndex = index   
+                }
+                else if(year === smallestYear){
+                    if(month < smallestMonth){
+                        smallestMonth = month
+                        TransactionIndex = index  
+                    }
+                    else if(smallestMonth === month){
+                        if(day <= smallestDay){
+                            smallesttDay = day
+                            TransactionIndex = index  
+                        }
+                    }
+                }
+            })
+        
+            newTransactionArray.push(TransactionArray[TransactionIndex])
+            TransactionArray.splice(TransactionIndex, 1)
+        }
     }
     
 
