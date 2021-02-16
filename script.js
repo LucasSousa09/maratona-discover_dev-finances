@@ -135,10 +135,19 @@ const Search = {
     searchTransaction(){
         let search = searchBar.value
         const regExp = new RegExp(search, 'gi')
+        let indexes = []
 
-        let searchedResult = Transaction.all.filter(transaction => {
+        Transaction.all.forEach((transaction, index) => {
+            if(regExp.test(transaction.description) === true){
+                indexes.push(index)
+            }
+        })
+
+        let searchedResult = Transaction.all.filter((transaction) => {
             return regExp.test(transaction.description) === true
         })
+
+        console.log(searchedResult)
 
         if(searchedResult.length > 0){
             searchBar.value = ''
@@ -150,7 +159,14 @@ const Search = {
             DOM.clearTransactions()
             Search.calcSpecificTransaction(searchedResult)
             for(let i = 0; i < searchedResult.length; i+= 1){
-                DOM.addTransactions(searchedResult[i])
+                DOM.addTransactions(searchedResult[i], indexes[i])
+                let removeBtns = document.querySelectorAll('.btn-td')
+                removeBtns.forEach( (btn) => {
+                    btn.addEventListener('click', () => {
+                        Transaction.remove(indexes[i])
+                    })
+                }
+                )
             }
         }
         else{
@@ -578,10 +594,11 @@ const App = {
             TransactionArray.splice(TransactionIndex, 1)
         }
     }
-    
+
+    Transaction.all = newTransactionArray
 
     // Adding the sorted array to the DOM
-    newTransactionArray.forEach((transaction, index) => {
+    Transaction.all.forEach((transaction, index) => {
         let date  = transaction.date.split("/")
         let year = yearSelector.value
 
@@ -606,10 +623,12 @@ const App = {
     })
 
     //Remove Transaction
-    const removeBtns = document.querySelectorAll('.btn-td')
-    removeBtns.forEach( (btn, idx) => {
+    let removeBtns = document.querySelectorAll('.btn-td')
+    removeBtns.forEach( (btn) => {
+        let thisIndex = btn.parentElement.parentElement.dataset.index
+        console.log(thisIndex)
         btn.addEventListener('click', () => {
-            Transaction.remove(idx)
+            Transaction.remove(thisIndex)
         })
     }
     )
