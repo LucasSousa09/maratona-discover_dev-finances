@@ -134,7 +134,7 @@ btnAll.addEventListener('click', () => {
 const Search = {
     searchTransaction(){
         let search = searchBar.value
-        const regExp = new RegExp(search, 'gi')
+        const regExp = new RegExp(search, 'i')
         let indexes = []
 
         Transaction.all.forEach((transaction, index) => {
@@ -147,6 +147,7 @@ const Search = {
             return regExp.test(transaction.description) === true
         })
 
+        console.log(indexes)
         console.log(searchedResult)
 
         if(searchedResult.length > 0){
@@ -626,7 +627,6 @@ const App = {
     let removeBtns = document.querySelectorAll('.btn-td')
     removeBtns.forEach( (btn) => {
         let thisIndex = btn.parentElement.parentElement.dataset.index
-        console.log(thisIndex)
         btn.addEventListener('click', () => {
             Transaction.remove(thisIndex)
         })
