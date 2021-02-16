@@ -128,7 +128,7 @@ body{
         top: 30px;
         right: 0;
         width: 200px;
-        height: 80px;
+        height: 120px;
 
 
         display: flex;
@@ -157,6 +157,27 @@ body{
         font-size: 14px;
 
         margin-right: 10px;
+    }
+
+
+/* Order ------------------------------------------------ */
+
+    .label-order{
+        width: 28px;
+        height: 28px;
+
+        cursor: pointer;
+        transition: 0.3s linear;
+    }
+
+    .arrow-icon{
+        width: 28px;
+        height: 28px;
+    }
+
+    .toggle:checked + .label-order{
+        transform-origin: center;
+        transform: rotate(180deg);
     }
 
 

@@ -268,14 +268,16 @@ const Transaction = {
                 value += Number(transaction.amount)
             }
         })
+        return value
     },
 
     calc(value, type){
         let selectedYear = yearSelector.value
 
+
         if(selectedYear === "undefined"){
           if(month === undefined){
-            this.undefinedMonth(value, type)
+            value = this.undefinedMonth(value, type)
           }
           else{
               Transaction.all.forEach(transaction => {
@@ -407,8 +409,6 @@ const Form = {
 const Animations = {
     animationHeight(initialHeight, finalHeight, delay ){
         let anima = document.querySelector('.animation-div')
-
-        console.log(finalHeight)
         anima.animate([
             {height: `${initialHeight}px`},
             {height: `${finalHeight * 60}px`}
@@ -472,7 +472,63 @@ const Animations = {
 
 const App = {
     init() {
-    Transaction.all.forEach((transaction, index) => {
+
+    // Sorting the results (The older the date, higher the hierarchy of the item on the list)
+    let TransactionLength = Transaction.all.length
+    let TransactionArray = []
+    let newTransactionArray = []
+
+    for(let c = 0; c < TransactionLength; c += 1){
+        TransactionArray.push(Transaction.all[c])
+    }
+
+    for(let c = 0; c < TransactionLength; c += 1){
+        let biggestYear = 0
+        let biggestMonth = 0
+        let biggestDay = 0
+        
+        let TransactionIndex = ''
+    
+        TransactionArray.forEach((transaction, index) => {
+            let date  = transaction.date.split("/")
+            let year = date[2]
+            let month = date[1]
+            let day = date[0]
+    
+            if(year > biggestYear){
+                biggestYear = year
+                biggestMonth = 0
+                biggestDay = 0
+    
+                if(month > biggestMonth){
+                    biggestMonth = month
+                    if(day > biggestDay){
+                        biggestDay = day        
+                    }   
+                }
+                TransactionIndex = index   
+            }
+            else if(year === biggestYear){
+                if(month > biggestMonth){
+                    biggestMonth = month
+                    TransactionIndex = index  
+                }
+                else if(biggestMonth === month){
+                    if(day >= biggestDay){
+                        biggestDay = day
+                        TransactionIndex = index  
+                    }
+                }
+            }
+        })
+    
+        newTransactionArray.push(TransactionArray[TransactionIndex])
+        TransactionArray.splice(TransactionIndex, 1)
+    }
+    
+
+    // Adding the sorted array to the DOM
+    newTransactionArray.forEach((transaction, index) => {
         let date  = transaction.date.split("/")
         let year = yearSelector.value
 
