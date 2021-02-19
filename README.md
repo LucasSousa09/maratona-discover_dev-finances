@@ -7,9 +7,9 @@
 
 ## Mas o foguete não pode parar...
 
-* Configurando o foguete definindo suas preferências nas **configurações** do app:
+* Configurando o foguete, já definindo suas preferências nas **configurações** do app:
 
-![](assets/dev_finances_v2_settingss_bar.jpg)
+![](assets/dev_finances_v2_settings_bar.jpg)
 
 * Saindo do chão com um **Tema escuro**, simples mas eficiente:
 
