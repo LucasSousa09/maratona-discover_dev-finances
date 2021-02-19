@@ -1,4 +1,4 @@
-# Maratona Discovery 
+# Maratona Discover
 ## dev.finance$
 
 🚀 **Uma maratona incrível, um projeto espetacular, uma oportunidade imperdível com o amor da Rocketseat** 🚀
