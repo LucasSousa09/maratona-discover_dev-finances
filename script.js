@@ -257,7 +257,7 @@ const Transaction = {
     all: Storage.get(),
     add(transactions){
         Transaction.all.push(transactions)
-        App.reload()
+        App.reload(transactions.date)
     },
     remove(index){
         Transaction.all.splice(index, 1)
@@ -638,10 +638,15 @@ const App = {
     Storage.set(Transaction.all)
 
     },
-    reload() {
+    reload(date) {
         if(animationsOff === false){
             Animations.animationClose()
             Animations.animationOpen()
+        }
+        if(date){
+            [getDay , getMonth ,getYear] = date.split('/')
+            month = getMonth - 1
+            selector.value = getMonth - 1
         }
         DOM.clearTransactions()
         App.init()

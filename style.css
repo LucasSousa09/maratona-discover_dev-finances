@@ -163,14 +163,21 @@ body{
 /* Order ------------------------------------------------ */
 
     .label-order{
-        width: 28px;
+        width: 31px;
         height: 28px;
 
         cursor: pointer;
         transition: 0.3s linear;
+
+        border-radius: 5px;
+
+        background-color: #f0f2f5;
     }
 
     .arrow-icon{
+
+        margin-right: -1px;
+
         width: 28px;
         height: 28px;
     }
